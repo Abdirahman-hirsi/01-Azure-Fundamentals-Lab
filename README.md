@@ -1,77 +1,94 @@
 # Azure Fundamentals Lab
 
-**Status:** In progress  
-**Focus:** Microsoft Azure | Cloud Engineering | Networking | Security
+**Status:** In Progress — Infrastructure Designed and Locally Validated  
+**Focus:** Microsoft Azure | Infrastructure as Code | Networking | Security  
+**Tools:** Terraform, Azure CLI, PowerShell, VS Code, Git and GitHub
 
 ## 1. Project Overview
 
-This project documents my hands-on learning journey toward becoming a Cloud Engineer. I am building practical experience with Microsoft Azure, cloud infrastructure, networking, security, monitoring and troubleshooting.
+This project documents my hands-on learning journey towards becoming a Cloud Engineer, with a focus on Azure infrastructure, networking, security, automation and troubleshooting.
 
-The goal is to design, deploy and manage a secure Azure environment while documenting my technical decisions, challenges and solutions.
+The objective is to design, deploy and manage a secure, maintainable and cost-conscious Azure environment.
+
+The project is being prepared locally before activating an Azure subscription.
 
 ## 2. Business Scenario
 
-A fictional company wants to host an application in Microsoft Azure. The infrastructure must be secure, manageable and cost-conscious.
+A fictional company needs a secure Azure environment to host an application.
 
-My task is to design and build a suitable cloud environment, configure network security and verify that the deployed resources work as intended.
+The infrastructure should provide network isolation, controlled access, monitoring and a foundation for future expansion.
 
-## 3. Planned Architecture
+Terraform is used to define the infrastructure as code, making the configuration reproducible and version-controlled.
 
-The initial lab will include:
+## 3. Current Architecture
 
-- **Azure Resource Group:** Organize and manage cloud resources.
-- **Virtual Network (VNet):** Create an isolated virtual network.
-- **Subnets:** Separate network resources.
-- **Network Security Group (NSG):** Control inbound and outbound network traffic.
-- **Virtual Machine (VM):** Deploy and configure a virtual server.
-- **Azure Monitor:** Monitor resources and investigate technical issues.
+The initial Terraform configuration contains:
 
-These resources will be implemented and documented step by step.
+| Component | Configuration |
+|---|---|
+| Resource Group | rg-azure-lab-01 |
+| Azure Region | West Europe |
+| Virtual Network | vnet-azure-lab-01 |
+| VNet Address Space | 10.0.0.0/16 |
+| Subnet | snet-lab-01 |
+| Subnet Address Range | 10.0.1.0/24 |
+| Network Security Group | nsg-lab-01 |
+| Security Rule | Deny inbound RDP from the Internet on TCP port 3389 |
 
-## 4. Security and Cost Management
+The Network Security Group is associated with the subnet.
 
-Security and cost control are part of the project from the beginning.
+**Deployment status:** These resources have been defined in Terraform but have not yet been deployed to Azure.
 
-Planned activities include:
+## 4. Implementation and Validation
 
-- Apply the principle of least privilege.
-- Configure appropriate network security rules.
-- Avoid exposing unnecessary services to the internet.
-- Monitor Azure resource usage and estimated costs.
-- Remove unused resources to prevent unnecessary charges.
+The following activities have been completed:
 
-## 5. Implementation
+- Installed and configured Terraform and Azure CLI.
+- Created the initial Terraform project structure.
+- Defined the Azure Resource Group, Virtual Network and subnet.
+- Configured a Network Security Group and an inbound RDP deny rule.
+- Associated the Network Security Group with the subnet.
+- Successfully initialized Terraform using `terraform init`.
+- Successfully validated the configuration using `terraform validate`.
+- Configured Git version control and published the project to GitHub.
 
-**Current status:** Preparation.
+Terraform validation confirms that the configuration is structurally valid. Deployment and runtime functionality have not yet been verified.
 
-The project structure and documentation are being prepared before deploying Azure resources.
+## 5. Security and Cost Management
 
-Implementation steps and configuration details will be added as the lab progresses.
+The project follows a security-first approach.
 
-## 6. Troubleshooting
+An explicit inbound security rule blocks RDP traffic originating from the Internet. Additional network segmentation and access controls will be developed in later stages.
 
-Technical problems will be documented using the following structure:
+Temporary Terraform files, state files and local variable files are excluded from Git using `.gitignore`.
 
-- **Problem:** What went wrong?
-- **Investigation:** Which commands and tools were used?
-- **Root cause:** What caused the problem?
-- **Solution:** How was it resolved?
-- **Verification:** How was the solution tested?
+The Azure subscription has not yet been activated. Infrastructure will be reviewed for potential costs before deployment.
 
-## 7. Evidence
+## 6. Planned Improvements
 
-This repository will contain relevant architecture diagrams, configuration files, PowerShell scripts and screenshots of completed lab activities.
+- Create and document the network architecture diagram.
+- Design separate application and management subnets.
+- Configure additional Network Security Group rules.
+- Prepare identity and access management using Azure RBAC.
+- Introduce Azure Monitor and Log Analytics.
+- Develop PowerShell automation scripts.
+- Deploy and test the infrastructure after activating an Azure subscription.
+- Document troubleshooting, validation results and lessons learned.
 
-Sensitive information, credentials and personal data will not be published.
+## 7. Troubleshooting and Lessons Learned
 
-## 8. Lessons Learned
+Each technical issue will be documented using the following structure:
 
-After each practical exercise, I will document the technical skills acquired, mistakes made and improvements identified.
+1. Problem and expected behaviour.
+2. Investigation and diagnostic commands.
+3. Root cause.
+4. Implemented solution.
+5. Verification and lessons learned.
 
-## 9. Next Steps
+This documentation will provide evidence of practical troubleshooting and engineering skills.
 
-- Complete Azure account setup.
-- Design the initial network architecture.
-- Deploy the first Azure resources.
-- Configure and test network security.
-- Document the results and publish the completed work on GitHub.
+## 8. Project Evidence
+
+The repository will contain Terraform configuration files, architecture diagrams, PowerShell scripts and relevant validation screenshots.
+
+Credentials, access tokens and other sensitive information will not be published.
