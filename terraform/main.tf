@@ -1,0 +1,66 @@
+
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4.0"
+    }
+  }
+}
+
+# Azure-provider
+provider "azurerm" {
+  features {}
+  subscription_id = var.subscription_id
+}
+
+# Resource Group
+resource "azurerm_resource_group" "lab" {
+  name     = "rg-azure-lab-01"
+  location = var.location
+}
+
+# Virtual Network
+resource "azurerm_virtual_network" "lab" {
+  name                = "vnet-azure-lab-01"
+  address_space       = ["10.0.0.0/16"]
+  location            = azurerm_resource_group.lab.location
+  resource_group_name = azurerm_resource_group.lab.name
+}
+
+# Subnet
+resource "azurerm_subnet" "lab" {
+  name                 = "snet-lab-01"
+  resource_group_name  = azurerm_resource_group.lab.name
+  virtual_network_name = azurerm_virtual_network.lab.name
+  address_prefixes     = ["10.0.1.0/24"]
+}
+
+# Network Security Group
+resource "azurerm_network_security_group" "lab" {
+  name                = "nsg-lab-01"
+  location            = azurerm_resource_group.lab.location
+  resource_group_name = azurerm_resource_group.lab.name
+}
+
+# Koppel de Network Security Group aan het subnet
+resource "azurerm_subnet_network_security_group_association" "lab" {
+  subnet_id                 = azurerm_subnet.lab.id
+  network_security_group_id = azurerm_network_security_group.lab.id
+}
+
+# Blokkeer inkomend RDP-verkeer vanaf het internet
+resource "azurerm_network_security_rule" "deny_rdp" {
+  name                       = "Deny-RDP-Internet"
+  priority                   = 100
+  direction                  = "Inbound"
+  access                     = "Deny"
+  protocol                   = "Tcp"
+  source_port_range          = "*"
+  destination_port_range     = "3389"
+  source_address_prefix      = "Internet"
+  destination_address_prefix = "*"
+
+  resource_group_name         = azurerm_resource_group.lab.name
+  network_security_group_name = azurerm_network_security_group.lab.name
+}
