@@ -80,3 +80,29 @@ resource "azurerm_subnet" "management" {
   virtual_network_name = azurerm_virtual_network.lab.name
   address_prefixes     = ["10.0.3.0/24"]
 }
+
+# Application Network Security Group
+resource "azurerm_network_security_group" "app" {
+  name                = "nsg-app-01"
+  location            = azurerm_resource_group.lab.location
+  resource_group_name = azurerm_resource_group.lab.name
+}
+
+# Management Network Security Group
+resource "azurerm_network_security_group" "management" {
+  name                = "nsg-management-01"
+  location            = azurerm_resource_group.lab.location
+  resource_group_name = azurerm_resource_group.lab.name
+}
+
+# Associate application NSG with application subnet
+resource "azurerm_subnet_network_security_group_association" "app" {
+  subnet_id                 = azurerm_subnet.app.id
+  network_security_group_id = azurerm_network_security_group.app.id
+}
+
+# Associate management NSG with management subnet
+resource "azurerm_subnet_network_security_group_association" "management" {
+  subnet_id                 = azurerm_subnet.management.id
+  network_security_group_id = azurerm_network_security_group.management.id
+}
