@@ -64,3 +64,19 @@ resource "azurerm_network_security_rule" "deny_rdp" {
   resource_group_name         = azurerm_resource_group.lab.name
   network_security_group_name = azurerm_network_security_group.lab.name
 }
+
+# Application Subnet
+resource "azurerm_subnet" "app" {
+  name                 = "snet-app-01"
+  resource_group_name  = azurerm_resource_group.lab.name
+  virtual_network_name = azurerm_virtual_network.lab.name
+  address_prefixes     = ["10.0.2.0/24"]
+}
+
+# Management Subnet
+resource "azurerm_subnet" "management" {
+  name                 = "snet-management-01"
+  resource_group_name  = azurerm_resource_group.lab.name
+  virtual_network_name = azurerm_virtual_network.lab.name
+  address_prefixes     = ["10.0.3.0/24"]
+}
