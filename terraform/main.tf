@@ -106,3 +106,18 @@ resource "azurerm_subnet_network_security_group_association" "management" {
   subnet_id                 = azurerm_subnet.management.id
   network_security_group_id = azurerm_network_security_group.management.id
 }
+# Block traffic from lab subnet to application subnet
+resource "azurerm_network_security_rule" "deny_lab_to_app" {
+  name                       = "Deny-Lab-To-App"
+  priority                   = 100
+  direction                  = "Inbound"
+  access                     = "Deny"
+  protocol                   = "*"
+  source_port_range          = "*"
+  destination_port_range     = "*"
+  source_address_prefix      = "10.0.1.0/24"
+  destination_address_prefix = "10.0.2.0/24"
+
+  resource_group_name         = azurerm_resource_group.lab.name
+  network_security_group_name = azurerm_network_security_group.app.name
+}
